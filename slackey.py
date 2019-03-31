@@ -19,6 +19,7 @@ import re
 import sys
 import pickle
 import argparse
+import json
 from getpass import getpass
 from datetime import datetime, timedelta
 
@@ -66,8 +67,10 @@ class EmSlackPartyParroter(object):
     def __init__(self):
         """Initialize class and connect to Slack."""
         self._parrot = {
-            'json': self.__class__.PARROT_ROOT.format('parrots.json'),
-            'img': self.__class__.PARROT_ROOT.format('parrots')
+            #'json': self.__class__.PARROT_ROOT.format('parrots.json'),
+            #'img': self.__class__.PARROT_ROOT.format('parrots')
+            'json': 'parrots.json',
+            'img': 'logos'
         }
         self._guest = {
             'json': self.__class__.PARROT_ROOT.format('guests.json'),
@@ -568,11 +571,14 @@ class EmSlackPartyParroter(object):
             list: Parsed JSON list of current parrots
 
         """
-        parrots = requests.get(self._parrot['json'])
-        parrots.raise_for_status()
+        with open(self._parrot['json'], 'r+') as fh:
+            parrots = fh.read()
+
+        #parrots = requests.get(self._parrot['json'])
+        #parrots.raise_for_status()
 
         # Return parsed JSON
-        return parrots.json()
+        return json.loads(parrots)
 
     def get_emoji_list(self, current_emoji, emojis, is_guest=False):
         """Get a formatted list of emoji.
@@ -602,6 +608,9 @@ class EmSlackPartyParroter(object):
             elif 'gif' in emoji.keys():
                 emoji['use_hd'] = False
                 emoji['slug'] = re.split(r'\.', emoji['gif'])[0]
+
+                # We do subdirs!
+                emoji['slug'] = re.split(r'/', emoji['slug'])[-1]
 
             # If we're only listing, do that
             if self.args.list_available:

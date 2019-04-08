@@ -66,22 +66,23 @@ class EmSlackPartyParroter(object):
 
     def __init__(self):
         """Initialize class and connect to Slack."""
-        self._parrot = {
-            #'json': self.__class__.PARROT_ROOT.format('parrots.json'),
-            #'img': self.__class__.PARROT_ROOT.format('parrots')
-            'json': 'parrots.json',
-            'img': 'logos'
-        }
-        self._guest = {
-            'json': self.__class__.PARROT_ROOT.format('guests.json'),
-            'img': self.__class__.PARROT_ROOT.format('guests')
-        }
-
         # Build argparser
         self._build_parser()
 
         # Parse args
         self.args = self._parse_args()
+
+        self._parrot = {
+            #'json': self.__class__.PARROT_ROOT.format('parrots.json'),
+            #'img': self.__class__.PARROT_ROOT.format('parrots')
+            'json': self.args.index,
+            'img': '.'
+        }
+
+        self._guest = {
+            'json': self.__class__.PARROT_ROOT.format('guests.json'),
+            'img': self.__class__.PARROT_ROOT.format('guests')
+        }
 
         # Specify bs parser
         self._bs_parser = 'html.parser'
@@ -203,6 +204,12 @@ class EmSlackPartyParroter(object):
             default=False,
             help='Don\'t prompt for approval to add parrots.',
             action='store_true'
+        )
+        self._parser.add_argument(
+            '-f', '--file',
+            dest='index',
+            help='JSON index to upload.',
+            required=True,
         )
 
     def _parse_args(self, required=False):
@@ -689,8 +696,12 @@ class EmSlackPartyParroter(object):
             parrot_url = os.path.join(self._parrot['img'], parrot_file)
 
         # Get parrot
-        parrot_img = requests.get(parrot_url, stream=True)
-        parrot_img.raise_for_status()
+        # cohoe custom shit
+        with open(parrot_url, 'rb') as fh:
+            parrot_img = fh.read()
+
+        #parrot_img = requests.get(parrot_url, stream=True)
+        #parrot_img.raise_for_status()
 
         # Navigate to the emoji page
         emoji_page = self.session.get(self.emoji_url)
@@ -705,7 +716,7 @@ class EmSlackPartyParroter(object):
                 'mode': 'data'
             },
             files={
-                'image': parrot_img.raw
+                'image': parrot_img
             },
             allow_redirects=False
         )

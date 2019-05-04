@@ -164,7 +164,7 @@ class EmSlackPartyParroter(object):
             default=os.getenv('SLACK_CHANNEL'),
             help='\n'.join(
                 [
-                    'Slack channel name to send new parrot messages to.',
+                    'Slack channel name to send new logo messages to.',
                     'Defaults to the $SLACK_CHANNEL environment variable.',
                     'Can be a public channel, private channel, or username.',
                     'e.g. "#public-channel", "private-channel", "@username"'
@@ -176,22 +176,22 @@ class EmSlackPartyParroter(object):
         self._parser.add_argument(
             '-g', '--include_guests',
             action='store_true',
-            help='Add Party Guests to your team in addition to standard parrots.'
+            help='Add Party Guests to your team in addition to standard logos.'
         )
         self._parser.add_argument(
             '-l', '--list_existing',
             action='store_true',
-            help='Displays a list of your Slack team\'s existing parrots.'
+            help='Displays a list of your Slack team\'s existing logos.'
         )
         self._parser.add_argument(
             '-a', '--list_available',
             action='store_true',
-            help='Displays a list of all available parrots.'
+            help='Displays a list of all available logos.'
         )
         self._parser.add_argument(
             '-n', '--list_new',
             action='store_true',
-            help='Displays a list of new parrots for your Slack team.'
+            help='Displays a list of new logos for your Slack team.'
         )
         self._parser.add_argument(
             '-r', '--refresh',
@@ -202,7 +202,7 @@ class EmSlackPartyParroter(object):
         self._parser.add_argument(
             '-q', '--quiet',
             default=False,
-            help='Don\'t prompt for approval to add parrots.',
+            help='Don\'t prompt for approval to add logos.',
             action='store_true'
         )
         self._parser.add_argument(
@@ -812,12 +812,12 @@ class EmSlackPartyParroter(object):
 
         # Bail if there are no parrots to add
         if not to_add:
-            print('No new parrots to add!', file=sys.stdout)
+            print('No new logos to add!', file=sys.stdout)
             sys.exit()
 
         # Report number of new parrots found
         print(
-            'Found {count} new parrot{s} to add!'.format(
+            'Found {count} new logo{s} to add!'.format(
                 count=len(to_add),
                 s='' if len(to_add) == 1 else 's'
             ),
@@ -849,14 +849,14 @@ class EmSlackPartyParroter(object):
         return self.add_parrots(to_add)
 
     def report(self, added):
-        """Print added parrots and send Slack notification.
+        """Print added logos and send Slack notification.
 
         Args:
             added (list): List of added Parrot emoji data
 
         """
         print(
-            'Successfully added {count} new parrots!'.format(count=len(added)),
+            'Successfully added {count} new logos!'.format(count=len(added)),
             file=sys.stdout
         )
 

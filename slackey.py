@@ -1,14 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-"""
-Copyright (c) 2017-2019, Erin Morelli.
-
-Title       : EM Slack Party Parroter
-Author      : Erin Morelli
-Email       : erin@erinmorelli.com
-License     : MIT
-Version     : 0.6
-"""
 
 # Future
 from __future__ import print_function
@@ -35,12 +25,11 @@ except ImportError:
     from urllib.parse import quote  # Python 3+
 
 # Script credits
-__title__ = 'EM Slack Party Parroter'
-__copyright__ = 'Copyright (c) 2017-2019, Erin Morelli'
-__author__ = 'Erin Morelli'
-__email__ = 'erin@erinmorelli.com'
+__title__ = 'Generic Slack Logo Uploader'
+__author__ = 'Grant Cohoe'
+__email__ = 'grant@grantcohoe.com'
 __license__ = 'MIT'
-__version__ = '0.5'
+__version__ = '0.0.1'
 
 # Disable SSL warnings
 urllib3.disable_warnings()
